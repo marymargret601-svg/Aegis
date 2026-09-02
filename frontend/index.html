@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AEGIS - AI Financial Security Core</title>
+    <link rel="stylesheet" href="style.css?v=5.0">
+</head>
+<body>
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo">A</div>
+                <div>
+                    <h1>AEGIS</h1>
+                    <span>SECURITY ENGINE</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-page="analyze">
+                    <span class="nav-icon">⚡</span>
+                    <span>Analyze Transaction</span>
+                </button>
+                <button class="nav-item" data-page="expenses">
+                    <span class="nav-icon">💳</span>
+                    <span>Track Expenses</span>
+                </button>
+                <button class="nav-item" data-page="alerts">
+                    <span class="nav-icon">🚨</span>
+                    <span>Fraud Alerts</span>
+                    <span id="alertBadgeCount" class="nav-count">0</span>
+                </button>
+                <button class="nav-item" data-page="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span>Analytics</span>
+                </button>
+                <button class="nav-item" data-page="reasoning">
+                    <span class="nav-icon">🧠</span>
+                    <span>AI Reasoning</span>
+                </button>
+                <button class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </button>
+            </nav>
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="main-wrapper">
+            <header>
+                <div class="header-breadcrumb">
+                    <span class="eyebrow">AEGIS CORE v2.4</span>
+                    <h2 id="pageTitle">Dashboard</h2>
+                </div>
+                <div class="user-pill">
+                    <span class="status-dot"></span>
+                    <span>Live Monitoring</span>
+                </div>
+            </header>
+
+            <main>
+                <!-- DASHBOARD PAGE -->
+                <section id="dashboardPage" class="page active-page">
+                    <div class="hero">
+                        <div>
+                            <span class="eyebrow">INTELLIGENT FRAUD GUARD</span>
+                            <h2>Real-Time <span>Protection</span></h2>
+                            <p class="hero-text">
+                                Aegis actively evaluates behavioral telemetry, transaction velocity, and risk parameters to prevent fraud before execution.
+                            </p>
+                        </div>
+                        <div class="shield">
+                            <div class="shield-ring">
+                                <div class="shield-icon">🛡️</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-grid">
+                        <div class="mini-card">
+                            <span class="mini-label">TOTAL ANALYZED</span>
+                            <strong id="totalTransactions">1</strong>
+                            <small>+12% from last week</small>
+                        </div>
+                        <div class="mini-card">
+                            <span class="mini-label">RISK LEVEL</span>
+                            <strong class="safe-text">LOW (12%)</strong>
+                            <small>Normal operating threshold</small>
+                        </div>
+                        <div class="mini-card">
+                            <span class="mini-label">SYSTEM HEALTH</span>
+                            <strong class="accent-text">99.8%</strong>
+                            <small>0 latency spikes detected</small>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: 24px;">
+                        <div class="card-heading">
+                            <div>
+                                <span class="card-label">RECENT ACTIVITY</span>
+                                <h3>Transaction Stream</h3>
+                            </div>
+                            <button class="action-btn" data-page-action="analyze">
+                                <span>ANALYZE NEW</span>
+                            </button>
+                        </div>
+                        <div class="transaction-table"></div>
+                    </div>
+                </section>
+
+                <!-- ANALYZE TRANSACTION PAGE -->
+                <section id="analyzePage" class="page">
+                    <div class="workspace">
+                        <div class="card">
+                            <div class="card-heading">
+                                <div>
+                                    <span class="card-label">INPUT METRICS</span>
+                                    <h3>Transaction Details</h3>
+                                </div>
+                                <span class="card-icon">⚡</span>
+                            </div>
+
+                            <form id="transactionForm" onsubmit="return false;">
+                                <div class="input-row">
+                                    <div class="field">
+                                        <label for="amount">TRANSACTION AMOUNT</label>
+                                        <div class="input-wrap">
+                                            <span>₹</span>
+                                            <input type="number" id="amount" placeholder="5000" value="85000" required>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label for="usualAmount">USUAL AMOUNT</label>
+                                        <div class="input-wrap">
+                                            <span>₹</span>
+                                            <input type="number" id="usualAmount" placeholder="1500" value="4000" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="input-row">
+                                    <div class="field">
+                                        <label for="frequency">24H FREQUENCY</label>
+                                        <input type="number" id="frequency" placeholder="3" value="4" required>
+                                    </div>
+                                    <div class="field">
+                                        <label for="transactionTime">TRANSACTION TIME</label>
+                                        <input type="text" id="transactionTime" placeholder="14:30" value="2:30 AM" required>
+                                    </div>
+                                </div>
+
+                                <div class="toggle-row">
+                                    <label class="toggle-option">
+                                        <input type="checkbox" id="newRecipient" checked>
+                                        <span class="toggle"></span>
+                                        <div>
+                                            <strong>New Recipient</strong>
+                                            <small>First time transfer</small>
+                                        </div>
+                                    </label>
+
+                                    <label class="toggle-option">
+                                        <input type="checkbox" id="unusualLocation" checked>
+                                        <span class="toggle"></span>
+                                        <div>
+                                            <strong>Unusual Location</strong>
+                                            <small>Outside regular area</small>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div style="display: flex; gap: 12px; margin-top: 20px;">
+                                    <button type="button" onclick="runAegisAnalysis()" style="flex: 1; background: #b7ff3c; color: #000; border: none; padding: 16px; border-radius: 10px; font-weight: 700; cursor: pointer;">
+                                        <span>ANALYZE TRANSACTION</span>
+                                        <span>→</span>
+                                    </button>
+                                    <button type="button" onclick="openRazorpayModal()" id="payRazorpayButton" style="flex: 1; background: #3395ff; color: #ffffff; border: none; padding: 16px; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                                        <span>PAY VIA RAZORPAY</span>
+                                        <span>💳</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-heading">
+                                <div>
+                                    <span class="card-label">EVALUATION VERDICT</span>
+                                    <h3>Risk Assessment</h3>
+                                </div>
+                                <span id="riskBadge" class="badge">LOW</span>
+                            </div>
+
+                            <div class="score-container">
+                                <div class="score-ring">
+                                    <strong id="riskScore">0</strong>
+                                    <span>/100</span>
+                                </div>
+                                <div>
+                                    <span class="score-title">RISK LEVEL</span>
+                                    <h4 id="riskLevel">LOW</h4>
+                                    <p id="riskMessage">Submit transaction parameters to generate an AI evaluation.</p>
+                                </div>
+                            </div>
+
+                            <div class="meter-track" style="margin-bottom: 24px;">
+                                <div id="riskMeterFill" class="meter-fill" style="width: 0%;"></div>
+                            </div>
+
+                            <div class="factors-heading">
+                                <span>DETECTED SIGNALS</span>
+                                <span>COUNT: <strong id="factorCount">0</strong></span>
+                            </div>
+
+                            <div id="riskFactors" class="factor-list">
+                                <div class="empty-factor">No transaction analyzed yet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TRACK EXPENSES PAGE -->
+                <section id="expensesPage" class="page">
+                    <div class="card">
+                        <div class="card-heading">
+                            <div>
+                                <span class="card-label">BUDGET MONITOR</span>
+                                <h3>Monthly Expenses</h3>
+                            </div>
+                            <button id="addExpenseButton" class="action-btn">
+                                <span>+ ADD EXPENSE</span>
+                            </button>
+                        </div>
+                        <div class="expense-summary">
+                            <h2 id="monthlyExpense">₹38,440</h2>
+                            <p class="muted-text">Total recorded expenditure for current billing cycle</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FRAUD ALERTS PAGE -->
+                <section id="alertsPage" class="page">
+                    <div class="card">
+                        <div class="card-heading">
+                            <div>
+                                <span class="card-label">ACTIVE WARNINGS</span>
+                                <h3>Flagged Threats</h3>
+                            </div>
+                        </div>
+                        <div class="alert-list"></div>
+                    </div>
+                </section>
+
+                <!-- ANALYTICS PAGE -->
+                <section id="analyticsPage" class="page">
+                    <div class="workspace">
+                        <div class="card">
+                            <div class="card-heading">
+                                <div>
+                                    <span class="card-label">RISK DISTRIBUTION</span>
+                                    <h3>Threat Level Breakdown</h3>
+                                </div>
+                            </div>
+                            <div style="height: 260px; position: relative;">
+                                <canvas id="riskDistributionChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-heading">
+                                <div>
+                                    <span class="card-label">SPENDING VS RISK</span>
+                                    <h3>Transaction Volume Telemetry</h3>
+                                </div>
+                            </div>
+                            <div style="height: 260px; position: relative;">
+                                <canvas id="spendingTrendChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI REASONING PAGE -->
+                <section id="reasoningPage" class="page">
+                    <div class="card">
+                        <div class="card-heading">
+                            <div>
+                                <span class="card-label">EXPLAINABLE AI ENGINE</span>
+                                <h3>Reasoning Breakdown</h3>
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <button onclick="exportAuditLogCSV()" style="background: #1e293b; border: 1px solid #334155; color: #38bdf8; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 700;">
+                                    📥 EXPORT AUDIT LOG (.CSV)
+                                </button>
+                                <span class="badge">SCORE: <strong id="reasoningScore">0</strong></span>
+                            </div>
+                        </div>
+                        <div class="reasoning-table"></div>
+                    </div>
+                </section>
+
+                <!-- SETTINGS PAGE -->
+                <section id="settingsPage" class="page">
+                    <div class="card">
+                        <div class="card-heading">
+                            <div>
+                                <span class="card-label">CONFIGURATION</span>
+                                <h3>Engine Parameters</h3>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <span>Auto-flag High Risk Transactions</span>
+                            <span class="switch active"></span>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- RAZORPAY MODAL EMBED -->
+    <div id="rzpCustomModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center;">
+        <div style="background: #0f172a; border: 1px solid #1e293b; width: 440px; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);">
+            <div style="background: #0284c7; padding: 20px; color: #fff; position: relative;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="background: #fff; color: #0284c7; width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px;">R</div>
+                    <div>
+                        <h4 style="margin: 0; font-size: 16px; font-weight: 700;">Aegis AI Guard</h4>
+                        <small style="opacity: 0.9; font-size: 12px;">Secured by Razorpay Checkout</small>
+                    </div>
+                </div>
+                <button onclick="closeRazorpayModal()" style="position: absolute; top: 16px; right: 16px; background: transparent; border: none; color: #fff; font-size: 20px; cursor: pointer;">✕</button>
+            </div>
+            
+            <div style="padding: 24px; color: #f8fafc;">
+                <div style="background: #1e293b; padding: 16px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: #94a3b8; font-size: 13px;">AMOUNT PAYABLE</span>
+                    <strong id="modalPayAmount" style="font-size: 20px; color: #38bdf8;">₹85,000.00</strong>
+                </div>
+
+                <p style="font-size: 12px; color: #94a3b8; margin-bottom: 12px; font-weight: 600; text-transform: uppercase;">Select Payment Method (Test Mode)</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button onclick="completeTestPayment('UPI / QR')" style="background: #1e293b; border: 1px solid #334155; color: #f8fafc; padding: 14px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; text-align: left;">
+                        <div>
+                            <strong style="display: block; font-size: 14px;">UPI / GooglePay / PhonePe</strong>
+                            <small style="color: #64748b; font-size: 11px;">Instant Pay via UPI ID or QR</small>
+                        </div>
+                        <span style="color: #38bdf8; font-weight: 700;">→</span>
+                    </button>
+
+                    <button onclick="completeTestPayment('Cards')" style="background: #1e293b; border: 1px solid #334155; color: #f8fafc; padding: 14px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; text-align: left;">
+                        <div>
+                            <strong style="display: block; font-size: 14px;">Cards (Credit / Debit)</strong>
+                            <small style="color: #64748b; font-size: 11px;">Visa, Mastercard, RuPay</small>
+                        </div>
+                        <span style="color: #38bdf8; font-weight: 700;">→</span>
+                    </button>
+
+                    <button onclick="completeTestPayment('Netbanking')" style="background: #1e293b; border: 1px solid #334155; color: #f8fafc; padding: 14px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; text-align: left;">
+                        <div>
+                            <strong style="display: block; font-size: 14px;">Netbanking</strong>
+                            <small style="color: #64748b; font-size: 11px;">All major Indian banks supported</small>
+                        </div>
+                        <span style="color: #38bdf8; font-weight: 700;">→</span>
+                    </button>
+                </div>
+            </div>
+
+            <div style="background: #020617; padding: 12px 24px; text-align: center; border-top: 1px solid #1e293b;">
+                <small style="color: #64748b; font-size: 11px;">⚡ Razorpay AI Buildathon Test Simulation Mode</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- DYNAMIC 2FA OTP STEP-UP MODAL -->
+    <div id="otpModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; align-items: center; justify-content: center;">
+        <div style="background: #0f172a; border: 1px solid #ef4444; width: 380px; border-radius: 16px; padding: 24px; color: #f8fafc; text-align: center; box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);">
+            <div style="font-size: 36px; margin-bottom: 8px;">🚨</div>
+            <h3 style="margin: 0; color: #ef4444;">HIGH RISK DETECTED</h3>
+            <p style="color: #94a3b8; font-size: 12px; margin: 8px 0 16px 0;">Transaction flagged by Aegis AI. Enter 2FA OTP sent to mobile to verify.</p>
+            <input type="text" id="otpInput" placeholder="Enter OTP (123456)" style="width: 80%; padding: 10px; background: #1e293b; border: 1px solid #334155; color: #fff; border-radius: 8px; text-align: center; font-size: 16px; font-weight: 700; letter-spacing: 2px; margin-bottom: 16px;">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="verifyOTP()" style="flex: 1; background: #b7ff3c; color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer;">VERIFY</button>
+                <button onclick="cancelOTP()" style="flex: 1; background: #ef4444; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer;">BLOCK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js?v=5.0"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Virtual Environments & Caches
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Temporary & Backup files
+*backup*
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
