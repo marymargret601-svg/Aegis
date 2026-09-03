@@ -1,11 +1,10 @@
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Optional
 
-app = FastAPI(title="Aegis AI Security Core")
+app = FastAPI()
 
-# Enable CORS for Frontend Interoperability
+# Enable CORS so frontend (port 5500) can talk to backend (port 8000)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,7 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class TransactionPayload(BaseModel):
+class TransactionInput(BaseModel):
     amount: float
     usual_amount: float
     frequency: int
@@ -22,78 +21,61 @@ class TransactionPayload(BaseModel):
     unusual_location: bool
     transaction_time: str
 
-class OrderPayload(BaseModel):
-    amount: float
-    currency: str = "INR"
-
-def log_security_threat(score: int, amount: float, time_str: str):
-    """Simulates asynchronous background notification to Security Operations Center"""
-    print(f"🚨 [AEGIS THREAT ALERT] High-risk threat detected! Score: {score}/100 | Amount: ₹{amount} | Execution Time: {time_str}")
-
-@app.get("/")
-def read_root():
-    return {"system": "Aegis AI Engine", "status": "ONLINE", "version": "2.4"}
-
 @app.post("/analyze")
-def analyze_transaction(data: TransactionPayload, background_tasks: BackgroundTasks):
-    risk_score = 0
+def analyze_transaction(txn: TransactionInput):
+    score = 0
     factors = []
 
-    # 1. Amount Multiplier Check
-    baseline = data.usual_amount if data.usual_amount > 0 else 1.0
-    multiplier = data.amount / baseline
+    # Amount multiplier calculation
+    if txn.usual_amount > 0:
+        multiplier = txn.amount / txn.usual_amount
+        if multiplier > 5:
+            score += 35
+            factors.append(f"High Amount Multiplier ({multiplier:.1f}x of baseline)")
+        elif multiplier > 2:
+            score += 20
+            factors.append(f"Moderate Amount Spike ({multiplier:.1f}x of baseline)")
 
-    if multiplier >= 5.0:
-        risk_score += 40
-        factors.append(f"The transaction amount is approximately {multiplier:.1f}x the user's usual baseline.")
-    elif multiplier >= 2.0:
-        risk_score += 20
-        factors.append(f"The transaction amount is approximately {multiplier:.1f}x the user's usual baseline.")
+    # Frequency check
+    if txn.frequency > 3:
+        score += 25
+        factors.append(f"High 24H Velocity ({txn.frequency} transactions)")
 
-    # 2. Velocity Check
-    if data.frequency > 3:
-        risk_score += 25
-        factors.append(f"{data.frequency} recent transactions indicate unusual velocity spikes.")
+    # New recipient
+    if txn.new_recipient:
+        score += 20
+        factors.append("First-time Recipient Transfer")
 
-    # 3. Anomaly Flags
-    if data.new_recipient:
-        risk_score += 20
-        factors.append("The recipient is new / first-time transfer target.")
+    # Unusual location
+    if txn.unusual_location:
+        score += 25
+        factors.append("Unusual Geolocation Area Flagged")
 
-    if data.unusual_location:
-        risk_score += 25
-        factors.append("The transaction occurred outside regular geographical profile.")
+    # Time window check (Overnight hours)
+    if "AM" in txn.transaction_time:
+        try:
+            hour = int(txn.transaction_time.split(":")[0])
+            if hour in [1, 2, 3, 4]:
+                score += 15
+                factors.append("Off-hours Execution Window (1 AM - 4 AM)")
+        except:
+            pass
 
-    # 4. Off-Hours Check
-    if "AM" in data.transaction_time.upper() and not ("10:" in data.transaction_time or "11:" in data.transaction_time):
-        risk_score += 10
-        factors.append(f"The transaction occurred at {data.transaction_time}, which is considered an off-hours period.")
+    score = min(score, 100)
 
-    # Final Verdict Classification
-    final_score = min(risk_score, 100)
-    if final_score >= 70:
+    if score >= 70:
         level = "HIGH"
-        explanation = "This transaction presents multiple high-risk behavioral indicators and requires immediate 2FA verification."
-        background_tasks.add_task(log_security_threat, final_score, data.amount, data.transaction_time)
-    elif final_score >= 40:
+        explanation = "Transaction risk score exceeds critical threat threshold. Immediate step-up verification required."
+    elif score >= 35:
         level = "MEDIUM"
-        explanation = "This transaction contains unusual behavioral signals and should be reviewed."
+        explanation = "Moderate anomaly detected. Queued for standard monitoring."
     else:
         level = "LOW"
-        explanation = "This transaction appears consistent with the provided normal behavioral pattern."
+        explanation = "Parameters align with normal user behavior profile."
 
     return {
-        "risk_score": final_score,
+        "risk_score": score,
         "risk_level": level,
         "explanation": explanation,
         "risk_factors": factors
-    }
-
-@app.post("/api/create-order")
-def create_order(payload: OrderPayload):
-    return {
-        "order_id": f"order_sim_{payload.amount}",
-        "key_id": "rzp_test_1DP5mmOlF5G5ag",
-        "amount": payload.amount * 100,
-        "currency": payload.currency
     }
