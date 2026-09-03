@@ -19,6 +19,5 @@ Aegis is an AI-driven, pre-execution financial security engine designed for real
 * Live Server extension in VS Code (or Python's built-in HTTP server)
 
 ### 1. Clone the Repository
-```bash
-git clone [https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git)
+git clone https://github.com/marymargret601-svg/Aegis.git
 cd Aegis
